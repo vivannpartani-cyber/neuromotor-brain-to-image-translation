@@ -30,7 +30,7 @@ export default function Home() {
           <div className="flex items-center gap-8">
             <nav className="nav-pill hidden md:flex">
               <a href="#workflow">Workflow</a>
-              <a href="#developer">Developer</a>
+              <a href="#start">Developer</a>
               <a href="#research">Research</a>
             </nav>
             <a href="https://github.com/vivannpartani-cyber/neuromotor-brain-to-image-translation" target="_blank" rel="noreferrer" className="btn-ghost px-4 py-1.5 text-sm">
