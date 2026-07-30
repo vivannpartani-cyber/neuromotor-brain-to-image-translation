@@ -91,23 +91,14 @@ def ensure_trained():
         return
     warn("No model found — training MLP mapper (~5-10 min, one-time only) …")
     info("Downloading Miyawaki fMRI dataset (~100 MB) and CLIP model (~1.7 GB) …")
-    # Import and call phase2 main directly
-    from neuromotor.phase2_fmri_to_clip import main as p2_main
-    import types
-    # Patch sys.argv so argparse in phase2 reads our args
-    old_argv = sys.argv
-    sys.argv = [
-        "phase2",
+    subprocess.run([
+        sys.executable, "-m", "neuromotor.phase2_fmri_to_clip",
         "--mode",       "miyawaki",
         "--data_dir",   str(DATA_DIR),
         "--mapper",     "mlp",
         "--epochs",     "15",
         "--output_dir", str(P2),
-    ]
-    try:
-        p2_main()
-    finally:
-        sys.argv = old_argv
+    ], check=True)
     ok("Training complete!")
 
 def ensure_generated(n=5):
@@ -118,20 +109,14 @@ def ensure_generated(n=5):
         return
     warn("Generating reconstructions — first run downloads SD v1.5 (~4 GB) …")
     ensure_trained()
-    from neuromotor.phase3_image_reconstruction import main as p3_main
-    old_argv = sys.argv
-    sys.argv = [
-        "phase3",
+    subprocess.run([
+        sys.executable, "-m", "neuromotor.phase3_image_reconstruction",
         "--embeddings_path",  str(EMBEDDINGS_NPY),
         "--image_paths_file", str(TEST_PATHS_TXT),
         "--output_dir",       str(P3),
         "--n_images",         str(n),
         "--n_steps",          "25",
-    ]
-    try:
-        p3_main()
-    finally:
-        sys.argv = old_argv
+    ], check=True)
     ok("Generation complete!")
 
 # ───────────────────────────────────────────────────────────────
@@ -231,20 +216,14 @@ def cmd_reconstruct(args):
     out_dir.mkdir(parents=True, exist_ok=True)
     np.save(tmp_emb, clip_emb)
     tmp_imgs.write_text(str(input_path) + "\n")
-    from neuromotor.phase3_image_reconstruction import main as p3_main
-    old_argv = sys.argv
-    sys.argv = [
-        "phase3",
+    subprocess.run([
+        sys.executable, "-m", "neuromotor.phase3_image_reconstruction",
         "--embeddings_path",  str(tmp_emb),
         "--image_paths_file", str(tmp_imgs),
         "--output_dir",       str(out_dir),
         "--n_images",         "1",
         "--n_steps",          "30",
-    ]
-    try:
-        p3_main()
-    finally:
-        sys.argv = old_argv
+    ], check=True)
     tmp_emb.unlink(missing_ok=True)
     tmp_imgs.unlink(missing_ok=True)
 
