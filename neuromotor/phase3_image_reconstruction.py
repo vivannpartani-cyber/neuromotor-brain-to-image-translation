@@ -476,21 +476,25 @@ def main():
     print(f"\n  [Load] Predicted embeddings: {predicted_embeddings.shape}")
 
     # -------------------------------------------------------------------------
-    # Step 2: Load corresponding ground-truth image paths
+    # Step 2: Load corresponding ground-truth image paths (if provided)
     # -------------------------------------------------------------------------
-    with open(args.image_paths_file, "r") as f:
-        test_image_paths = [line.strip() for line in f if line.strip()]
-    print(f"  [Load] Test image paths: {len(test_image_paths)}")
+    if args.image_paths_file and args.image_paths_file.lower() != "none" and os.path.exists(args.image_paths_file):
+        with open(args.image_paths_file, "r") as f:
+            test_image_paths = [line.strip() for line in f if line.strip()]
+        print(f"  [Load] Test image paths: {len(test_image_paths)}")
 
-    assert len(predicted_embeddings) == len(test_image_paths), (
-        f"Embedding count ({len(predicted_embeddings)}) ≠ "
-        f"image count ({len(test_image_paths)})"
-    )
+        assert len(predicted_embeddings) == len(test_image_paths), (
+            f"Embedding count ({len(predicted_embeddings)}) ≠ "
+            f"image count ({len(test_image_paths)})"
+        )
+        test_image_paths = test_image_paths[:args.n_images]
+    else:
+        print(f"  [Load] No test image paths provided (skipping comparisons)")
+        test_image_paths = None
 
     # Limit to requested number of reconstructions
     n = min(args.n_images, len(predicted_embeddings))
     predicted_embeddings = predicted_embeddings[:n]
-    test_image_paths     = test_image_paths[:n]
 
     # -------------------------------------------------------------------------
     # Step 3: Load Stable Diffusion pipeline
@@ -519,9 +523,6 @@ def main():
     for i in range(n):
         print(f"\n  ─── Sample {i+1}/{n} ───")
 
-        # Load ground truth stimulus image
-        gt_image = Image.open(test_image_paths[i]).convert("RGB")
-
         # Generate reconstruction from predicted CLIP embedding
         generated_image = generate_from_clip_embedding(
             pipeline            = pipeline,
@@ -542,14 +543,16 @@ def main():
         generated_image.save(gen_path)
         print(f"  [Generated] → {gen_path}")
 
-        # Save side-by-side comparison grid
-        compare_path = os.path.join(args.output_dir, f"comparison_{i:04d}.png")
-        save_comparison_grid(
-            ground_truth_image = gt_image,
-            generated_image    = generated_image,
-            output_path        = compare_path,
-            sample_idx         = i,
-        )
+        # Save side-by-side comparison grid if ground truth exists
+        if test_image_paths is not None:
+            gt_image = Image.open(test_image_paths[i]).convert("RGB")
+            compare_path = os.path.join(args.output_dir, f"comparison_{i:04d}.png")
+            save_comparison_grid(
+                ground_truth_image = gt_image,
+                generated_image    = generated_image,
+                output_path        = compare_path,
+                sample_idx         = i,
+            )
 
     # -------------------------------------------------------------------------
     # Summary

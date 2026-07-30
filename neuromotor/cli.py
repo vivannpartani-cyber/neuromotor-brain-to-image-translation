@@ -244,6 +244,90 @@ def cmd_reconstruct(args):
     print(f"\n{GREEN}{BOLD}  🧠  Done! Check your Downloads folder.{RESET}\n")
 
 
+def cmd_dev_decode(args):
+    banner()
+    step("Developer API — Custom Brain Signal Decoding")
+    
+    signals_path = Path(args.signals).expanduser().resolve()
+    if not signals_path.exists():
+        fail(f"Signal file not found: {signals_path}")
+        sys.exit(1)
+        
+    _, device_name = detect_device()
+    info(f"Device: {device_name}")
+    info(f"Signals file: {signals_path}")
+    
+    step("Step 1/3  Loading custom neural signals")
+    try:
+        custom_signals = np.load(signals_path)
+    except Exception as e:
+        fail(f"Failed to load .npy file: {e}")
+        sys.exit(1)
+    
+    ok(f"Loaded signals: {custom_signals.shape}")
+    if len(custom_signals.shape) == 1:
+        custom_signals = custom_signals.reshape(1, -1)
+    
+    mapper_path = Path(args.mapper).expanduser().resolve() if args.mapper else MLP_PT
+    if not mapper_path.exists():
+        if mapper_path == MLP_PT:
+            warn("Default MLP mapper not found. Generating default models now...")
+            ensure_trained()
+        else:
+            fail(f"Custom mapper file not found: {mapper_path}")
+            sys.exit(1)
+            
+    step("Step 2/3  Mapping signals → CLIP semantic space")
+    info(f"Using mapper: {mapper_path.name}")
+    
+    from neuromotor.phase2_fmri_to_clip import MLPMapper
+    # We infer input dim from the provided signals
+    input_dim = custom_signals.shape[1]
+    mlp = MLPMapper(n_voxels=input_dim, clip_dim=1024)
+    
+    try:
+        ckpt = torch.load(mapper_path, map_location="cpu")
+        state_dict = ckpt["model_state"] if "model_state" in ckpt else ckpt
+        mlp.load_state_dict(state_dict)
+    except Exception as e:
+        fail(f"Failed to load mapper weights (ensure architecture matches input dim {input_dim}): {e}")
+        sys.exit(1)
+        
+    mlp.eval()
+    with torch.no_grad():
+        clip_emb = mlp(torch.tensor(custom_signals, dtype=torch.float32)).numpy()
+    ok(f"Predicted CLIP embedding: {clip_emb.shape}")
+    
+    step("Step 3/3  Generating image via Stable Diffusion")
+    tmp_emb = HOME_DIR / "_cli_dev_emb.npy"
+    out_dir = P3 / f"dev_decoded_{int(time.time())}"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    np.save(tmp_emb, clip_emb)
+    
+    subprocess.run([
+        sys.executable, "-m", "neuromotor.phase3_image_reconstruction",
+        "--embeddings_path",  str(tmp_emb),
+        "--image_paths_file", "none",
+        "--output_dir",       str(out_dir),
+        "--n_images",         str(len(custom_signals)),
+        "--n_steps",          "30",
+    ], check=True)
+    
+    tmp_emb.unlink(missing_ok=True)
+    
+    generated = sorted(out_dir.glob("generated_*.png"))
+    if not generated:
+        fail("No output image produced."); sys.exit(1)
+        
+    step(f"Finished decoding {len(generated)} images!")
+    for g in generated:
+        dest = DOWNLOADS / f"neuromotor_dev_{g.name}"
+        shutil.copy(g, dest)
+        ok(f"Saved → {dest}")
+        open_file(dest)
+        
+    print(f"\n{GREEN}{BOLD}  🚀  Developer decoding complete!{RESET}\n")
+
 # ───────────────────────────────────────────────────────────────
 #  Entry point
 # ───────────────────────────────────────────────────────────────
@@ -257,7 +341,8 @@ Getting started:
   neuromotor demo                              ← auto-setup, saves to ~/Downloads
   neuromotor list                              ← show all reconstructions
   neuromotor show --sample 0                  ← open a specific one
-  neuromotor reconstruct --input ~/Downloads/brain.png{RESET}
+  neuromotor reconstruct --input ~/Downloads/brain.png
+  neuromotor dev-decode --signals data.npy    ← decode custom BCI signals{RESET}
 """
     )
     sub = parser.add_subparsers(title="commands", dest="command")
@@ -269,6 +354,12 @@ Getting started:
     p_rec = sub.add_parser("reconstruct", help="Reconstruct from your own image")
     p_rec.add_argument("--input", required=True, metavar="PATH")
     p_rec.set_defaults(func=cmd_reconstruct)
+    
+    p_dev = sub.add_parser("dev-decode", help="Developer tool: Reconstruct from custom brain signal .npy arrays")
+    p_dev.add_argument("--signals", required=True, metavar="PATH", help="Path to .npy file containing neural vectors")
+    p_dev.add_argument("--mapper", type=str, metavar="PATH", help="Optional path to custom trained MLP model (.pt)")
+    p_dev.set_defaults(func=cmd_dev_decode)
+    
     args = parser.parse_args()
     if args.command is None:
         banner(); parser.print_help(); return
