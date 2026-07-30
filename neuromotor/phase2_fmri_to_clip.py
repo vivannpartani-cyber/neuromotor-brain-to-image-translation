@@ -606,7 +606,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--data_dir",   type=str,   default="mock_data")
     parser.add_argument("--mode",       type=str,   default="mock",
-                        choices=["mock", "god", "nsd"])
+                        choices=["mock", "god", "nsd", "miyawaki"])
     parser.add_argument("--mapper",     type=str,   default="both",
                         choices=["ridge", "mlp", "both"])
     parser.add_argument("--epochs",     type=int,   default=50)
