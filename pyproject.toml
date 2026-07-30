@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "neuromotor"
 version = "1.0.0"
-description = "Neural Image Reconstruction from Brainwaves — Stanford AIMI Proof-of-Concept"
+description = "Neural Image Reconstruction from Brainwaves — Proof-of-Concept"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Vivann Partani", email = "vivannpartani@gmail.com" }]

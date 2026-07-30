@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neural Translation Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+  </head>
+  <body>
+    <!-- Background mesh gradients -->
+    <div class="mesh-bg">
+      <div class="mesh-blob blob-1"></div>
+      <div class="mesh-blob blob-2"></div>
+      <div class="mesh-blob blob-3"></div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="app-container">
+      
+      <!-- Header Section -->
+      <header class="app-header glass-panel">
+        <div class="header-content">
+          <h1>Neural Translation</h1>
+          <p class="subtitle">Brainwaves to Images using Stable Diffusion</p>
+        </div>
+        <div class="header-actions">
+          <button id="mock-trigger-btn" class="btn-primary">
+            <span class="btn-icon">⚡</span>
+            <span>Trigger Mock Translation</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Status Indicator (Hidden by default) -->
+      <section id="status-panel" class="status-panel glass-panel hidden">
+        <div class="status-indicator">
+          <div class="spinner"></div>
+          <span id="status-text">Processing fMRI data...</span>
+        </div>
+        <div class="progress-bar-container">
+          <div id="progress-bar" class="progress-bar"></div>
+        </div>
+      </section>
+
+      <!-- Results Gallery -->
+      <section class="gallery-section">
+        <div class="gallery-header">
+          <h2>Latest Reconstructions</h2>
+          <p>Ridge Mapper (R²=0.86) + SD v1.5 (30 steps)</p>
+        </div>
+
+        <div id="gallery-grid" class="gallery-grid">
+          <!-- Cards injected via JS -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Template for a gallery card -->
+    <template id="card-template">
+      <article class="gallery-card glass-panel">
+        <div class="card-image-wrapper">
+          <img class="card-image" src="" alt="Comparison Grid" loading="lazy" />
+          <div class="card-overlay">
+            <button class="btn-icon-only view-btn" title="View Fullsize">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Sample</h3>
+          <div class="card-metrics">
+            <span class="metric-badge">CosSim: 0.976</span>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <!-- Modal for full screen view -->
+    <dialog id="image-modal" class="glass-modal">
+      <button id="close-modal" class="close-btn">&times;</button>
+      <img id="modal-image" src="" alt="Fullsize" />
+    </dialog>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

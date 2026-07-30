@@ -2,7 +2,7 @@
 """
 neuromotor.cli — Neural Image Reconstruction from Brainwaves
 =============================================================
-Stanford AIMI Proof-of-Concept
+Neuromotor Proof-of-Concept
 
 After installing:
     pip3 install git+https://github.com/vivannpartani-cyber/neuromotor
@@ -29,7 +29,7 @@ def banner():
     print(f"""
 {CYAN}{BOLD}╔══════════════════════════════════════════════════════════════════╗
 ║  🧠  N E U R O M O T O R  —  Brainwaves → Images              ║
-║      Stanford AIMI Proof-of-Concept  |  Miyawaki 2008 Dataset  ║
+║      Neuromotor Proof-of-Concept  |  Miyawaki 2008 Dataset  ║
 ╚══════════════════════════════════════════════════════════════════╝{RESET}""")
 
 def step(msg):  print(f"\n{CYAN}{BOLD}▶  {msg}{RESET}")
@@ -334,7 +334,7 @@ def cmd_dev_decode(args):
 def main():
     parser = argparse.ArgumentParser(
         prog="neuromotor",
-        description="Neural Image Reconstruction from Brainwaves — Stanford AIMI PoC",
+        description="Neural Image Reconstruction from Brainwaves — PoC",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=f"""{DIM}
 Getting started:

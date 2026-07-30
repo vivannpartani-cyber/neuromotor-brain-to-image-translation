@@ -1,6 +1,6 @@
 # 🧠 Neural Translation: Brainwaves → Images
 
-> **Stanford AIMI Application Proof-of-Concept**  
+> **Proof-of-Concept**  
 > Decoding human visual cortex fMRI signals into images using an MLP mapper and Stable Diffusion.
 
 ---

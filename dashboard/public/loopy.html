@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loopy — Local AI build loop for indie devs</title>
+  
+  <meta name="theme-color" content="rgb(251,251,248)">
+  <!-- We've updated the relative paths to absolute URLs so the styles and images load correctly -->
+  <link rel="stylesheet" href="https://loopy.yachts/assets/css/datafruit.css?v=12">
+  <link rel="icon" href="https://loopy.yachts/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="https://loopy.yachts/favicon.svg">
+  <link rel="icon" type="image/png" sizes="48x48" href="https://loopy.yachts/assets/favicon-48.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="https://loopy.yachts/assets/favicon-96.png">
+  <link rel="apple-touch-icon" href="https://loopy.yachts/assets/apple-touch-icon.png">
+</head>
+<body>
+  <div class="bg-top" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="header-blur" aria-hidden="true"></div>
+    <div class="container header-inner">
+      <a href="/" class="logo">
+        <svg class="logo-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 12a6 6 0 0 1 12 0" fill="none" stroke="#c9789e" stroke-width="2" stroke-linecap="round"></path>
+          <path d="M18 12a6 6 0 0 1-12 0" fill="none" stroke="#f0a8c8" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+        <span class="logo-word">loopy</span>
+      </a>
+      <div class="header-end">
+        <nav class="nav-pill" aria-label="Main">
+          <a href="#workflow">Workflow</a>
+          <a href="#features">Features</a>
+          <a href="#local">Local</a>
+          <a href="#quickstart">Quickstart</a>
+          <a href="/testers">Testers</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <div class="cta-pill">
+          <a href="https://github.com/arjunkshah/loopy">GitHub</a>
+        </div>
+      </div>
+      <button type="button" class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+  <div class="header-spacer" aria-hidden="true"></div>
+
+  <div class="shell">
+    <main>
+      <section class="hero">
+        <div class="container">
+          <div class="hero-copy">
+            <h1 class="hero-title" data-split="1" aria-label="Your coding agent stops. Loopy keeps testing."><span class="hero-word is-in" style="--i: 0;">Your</span> <span class="hero-word is-in" style="--i: 1;">coding</span> <span class="hero-word is-in" style="--i: 2;">agent</span> <span class="hero-word is-in" style="--i: 3;">stops.</span> <span class="hero-word is-in" style="--i: 4;">Loopy</span> <span class="hero-word is-in" style="--i: 5;">keeps</span> <span class="hero-word is-in" style="--i: 6;">testing.</span></h1>
+            <p class="hero-lead is-in">
+              Loopy is a <strong>local-first build loop for indie devs</strong>. It runs your coding agent, boots the app, runs tests, opens pages in a real browser, patches failures, and repeats until the product actually works in your repo.
+            </p>
+            <div class="hero-actions is-in">
+              <button type="button" class="btn-accent install-btn" data-cmd="curl -fsSL loopy.yachts/install | bash">Copy install command</button>
+              <a href="/testers" class="btn-link">Become a tester →</a>
+            </div>
+          </div>
+          <div class="hero-visual is-in">
+            <div class="hero-frame is-running" id="hero-mock">
+              <div class="hero-frame-bar">
+                <div class="frame-dots"><span></span><span></span><span></span></div>
+                <span class="frame-title">Loopy · loop</span>
+                <span class="frame-badge">local · your keys</span>
+              </div>
+              <div class="mock-dashboard" aria-label="Loopy product mock — enter prompt and run loop">
+                <div class="mock-compose">
+                  <label class="mock-compose-label" for="mock-typed">Your idea</label>
+                  <div class="mock-input-row">
+                    <div class="mock-input" id="mock-input">
+                      <span id="mock-typed">Build a CLI that syncs Linear tickets to markdown — 12 turns max, ship an MVP.</span><span class="mock-caret" aria-hidden="true"></span>
+                    </div>
+                    <button type="button" class="mock-loop-btn is-clicked" id="mock-loop-btn" disabled="">Loop</button>
+                  </div>
+                  <p class="mock-status" id="mock-status">Tests passing · browser review clean</p>
+                </div>
+                <div class="mock-workspace" id="mock-workspace">
+                  <ul class="mock-timeline" id="mock-timeline">
+                    <li class="mock-phase-row is-done" data-phase="nebius" data-delay="700"><img src="https://loopy.yachts/assets/images/logos/nebius.svg" alt="" width="16" height="16"><span class="mock-phase-name">Nebius</span><span class="mock-phase-detail">Planning 12-turn MVP…</span><span class="mock-phase-spin"></span></li>
+                    <li class="mock-phase-row is-done" data-phase="tavily" data-delay="850"><img src="https://loopy.yachts/assets/images/logos/tavily.svg" alt="" width="16" height="16"><span class="mock-phase-name">Tavily</span><span class="mock-phase-detail">Researching markets…</span><span class="mock-phase-spin"></span></li>
+                    <li class="mock-phase-row is-done" data-phase="firecrawl" data-delay="800"><img src="https://loopy.yachts/assets/images/logos/firecrawl.svg" alt="" width="16" height="16"><span class="mock-phase-name">Firecrawl</span><span class="mock-phase-detail">Deep scraping specs…</span><span class="mock-phase-spin"></span></li>
+                    <li class="mock-phase-row is-done" data-phase="mem0" data-delay="700"><img src="https://loopy.yachts/assets/images/logos/mem0.svg" alt="" width="16" height="16"><span class="mock-phase-name">Mem0</span><span class="mock-phase-detail">Recalling memory…</span><span class="mock-phase-spin"></span></li>
+                    <li class="mock-phase-row is-done" data-phase="compress" data-delay="750"><img src="https://loopy.yachts/assets/images/logos/supercompress.svg" alt="" width="16" height="16"><span class="mock-phase-name">SuperCompress</span><span class="mock-phase-detail">Compressing context…</span><span class="mock-phase-spin"></span></li>
+                    <li class="mock-phase-row is-done" data-phase="codex" data-delay="1100"><img src="https://loopy.yachts/assets/images/logos/openai.svg" alt="" width="16" height="16"><span class="mock-phase-name">Codex</span><span class="mock-phase-detail">Building repo…</span><span class="mock-phase-spin"></span></li>
+                    <li class="mock-phase-row is-active" data-phase="qa" data-delay="650"><img src="https://loopy.yachts/assets/images/logos/supercompress.svg" alt="" width="16" height="16"><span class="mock-phase-name">QA</span><span class="mock-phase-detail">Tests + browser review…</span><span class="mock-phase-spin"></span></li>
+                    <li class="mock-phase-row" data-phase="composio" data-delay="900"><img src="https://loopy.yachts/assets/images/logos/composio.svg" alt="" width="16" height="16"><span class="mock-phase-name">Composio</span><span class="mock-phase-detail">GitHub · Linear · Gmail…</span><span class="mock-phase-spin"></span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="workflow-show" id="workflow">
+        <div class="container">
+          <span class="section-eyebrow reveal">The build loop</span>
+          <h2 class="features-head reveal">Failure is not the end state. It is the next patch.</h2>
+          <p class="section-lead features-lead reveal">Loopy turns failed tests, broken routes, console errors, and missing setup into the next agent turn. It does not stop with advice; it keeps editing the repo and checking the app.</p>
+          <div class="lpb-workflow reveal" aria-label="Loopy agent workflow preview">
+            <div class="lpb-col">
+              <div class="lpb-col-head"><span>Backlog</span><span class="lpb-count">3</span></div>
+              <article class="lpb-card">
+                <div class="lpb-card-top"><span class="lpb-pill lpb-pill--med">medium</span><span class="lpb-id">LPY-114</span></div>
+                <p class="lpb-title">Repair flaky checkout tests</p>
+                <div class="lpb-meta"><span class="lpb-dot lpb-dot--test"></span>Flaky-Test Killer</div>
+              </article>
+              <article class="lpb-card">
+                <div class="lpb-card-top"><span class="lpb-pill lpb-pill--low">low</span><span class="lpb-id">LPY-118</span></div>
+                <p class="lpb-title">Bump deps + changelog</p>
+                <div class="lpb-meta"><span class="lpb-dot lpb-dot--dep"></span>Dependency Bot</div>
+              </article>
+            </div>
+            <div class="lpb-col">
+              <div class="lpb-col-head"><span>In progress</span><span class="lpb-count">2</span></div>
+              <article class="lpb-card lpb-card--active">
+                <div class="lpb-card-top"><span class="lpb-pill lpb-pill--high">high</span><span class="lpb-id">LPY-111</span></div>
+                <p class="lpb-title">Add Stripe webhook retries</p>
+                <div class="lpb-meta"><span class="lpb-dot lpb-dot--code"></span>Codex · working<span class="lpb-spin"></span></div>
+              </article>
+              <article class="lpb-card">
+                <div class="lpb-card-top"><span class="lpb-pill lpb-pill--med">medium</span><span class="lpb-id">LPY-109</span></div>
+                <p class="lpb-title">Migrate auth to sessions</p>
+                <div class="lpb-meta"><span class="lpb-dot lpb-dot--code"></span>Claude Code</div>
+              </article>
+            </div>
+            <div class="lpb-col">
+              <div class="lpb-col-head"><span>In review</span><span class="lpb-count">1</span></div>
+              <article class="lpb-card lpb-card--review">
+                <div class="lpb-card-top"><span class="lpb-pill lpb-pill--high">high</span><span class="lpb-id">LPY-106</span></div>
+                <p class="lpb-title">Fix N+1 in dashboard query</p>
+                <div class="lpb-meta"><span class="lpb-dot lpb-dot--code"></span>3 files · +84 −19</div>
+                <div class="lpb-review"><button type="button">Approve</button><button type="button" class="lpb-ghost">Reject</button></div>
+              </article>
+            </div>
+            <div class="lpb-col">
+              <div class="lpb-col-head"><span>Done</span><span class="lpb-count">7</span></div>
+              <article class="lpb-card lpb-card--done">
+                <div class="lpb-card-top"><span class="lpb-pill lpb-pill--low">low</span><span class="lpb-id">LPY-103</span></div>
+                <p class="lpb-title">Ship release notes v0.4</p>
+                <div class="lpb-meta"><span class="lpb-check">✓</span>PR merged</div>
+              </article>
+              <article class="lpb-card lpb-card--done">
+                <div class="lpb-card-top"><span class="lpb-pill lpb-pill--med">medium</span><span class="lpb-id">LPY-101</span></div>
+                <p class="lpb-title">Document onboarding flow</p>
+                <div class="lpb-meta"><span class="lpb-check">✓</span>PR merged</div>
+              </article>
+            </div>
+          </div>
+          <div class="lpb-features">
+            <div class="lpb-feat reveal"><strong>Tests drive the loop</strong><span>Pytest, npm tests, and failing commands become concrete repair instructions for the next coding turn.</span></div>
+            <div class="lpb-feat reveal"><strong>Browser checks are first-class</strong><span>Loopy boots the app, opens routes, captures screenshots, watches console errors, and loops on real UI failures.</span></div>
+            <div class="lpb-feat reveal"><strong>Repo-native output</strong><span>It works in your folder, reuses your GitHub repo, commits/pushes changes, and leaves a traceable run receipt.</span></div>
+            <div class="lpb-feat reveal"><strong>Failure recovery</strong><span>If one pass breaks, Loopy feeds the failure back into the agent instead of handing you a TODO list.</span></div>
+            <div class="lpb-feat reveal"><strong>Local by default</strong><span>Your code stays on your machine. Loopy uses your CLI agents and your keys instead of a hosted sandbox.</span></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -25,7 +25,7 @@ fi
 echo ""
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║  🧠  NEUROMOTOR — Brainwaves → Images                      ║"
-echo "║      Stanford AIMI Proof-of-Concept                         ║"
+echo "║      Neuromotor Proof-of-Concept                            ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 echo "   Python found: $($PY --version)"
