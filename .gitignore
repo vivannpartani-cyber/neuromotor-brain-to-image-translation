@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Outputs (large files — not committed)
+outputs/
+data/
+mock_data/
+nilearn_data/
+*.pt
+*.pkl
+*.npy
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Env
+.env
+venv/

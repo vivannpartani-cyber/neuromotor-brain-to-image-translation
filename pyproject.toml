@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "neuromotor"
+version = "1.0.0"
+description = "Neural Image Reconstruction from Brainwaves — Stanford AIMI Proof-of-Concept"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Vivann Partani", email = "vivannpartani@gmail.com" }]
+license = { text = "MIT" }
+keywords = ["fmri", "brain-decoding", "stable-diffusion", "neuroscience", "clip"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=2.1.0",
+    "torchvision>=0.16.0",
+    "diffusers>=0.24.0",
+    "transformers>=4.35.0",
+    "accelerate>=0.24.0",
+    "open-clip-torch>=2.23.0",
+    "nilearn>=0.10.0",
+    "nibabel>=5.1.0",
+    "numpy>=1.24.0",
+    "scikit-learn>=1.3.0",
+    "pandas>=2.0.0",
+    "scipy>=1.11.0",
+    "matplotlib>=3.7.0",
+    "Pillow>=10.0.0",
+    "tqdm>=4.65.0",
+    "huggingface-hub>=0.19.0",
+    "safetensors>=0.4.0",
+]
+
+[project.scripts]
+neuromotor = "neuromotor.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/vivannpartani-cyber/neuromotor"
+Repository = "https://github.com/vivannpartani-cyber/neuromotor"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["neuromotor*"]
