@@ -39,8 +39,8 @@ dependencies = [
 neuromotor = "neuromotor.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/vivannpartani-cyber/neuromotor"
-Repository = "https://github.com/vivannpartani-cyber/neuromotor"
+Homepage = "https://github.com/vivannpartani-cyber/neuromotor-brain-to-image-translation"
+Repository = "https://github.com/vivannpartani-cyber/neuromotor-brain-to-image-translation"
 
 [tool.setuptools.packages.find]
 where = ["."]
