@@ -300,9 +300,11 @@ def cmd_dev_decode(args):
     
     step("Step 3/3  Generating image via Stable Diffusion")
     tmp_emb = HOME_DIR / "_cli_dev_emb.npy"
+    run_seed = int(time.time()) % 100000  # unique seed each run
     out_dir = P3 / f"dev_decoded_{int(time.time())}"
     out_dir.mkdir(parents=True, exist_ok=True)
     np.save(tmp_emb, clip_emb)
+    info(f"Generation seed: {run_seed}  (unique each run)")
     
     subprocess.run([
         sys.executable, "-m", "neuromotor.phase3_image_reconstruction",
@@ -311,6 +313,7 @@ def cmd_dev_decode(args):
         "--output_dir",       str(out_dir),
         "--n_images",         str(len(custom_signals)),
         "--n_steps",          "30",
+        "--seed",             str(run_seed),
     ], check=True)
     
     tmp_emb.unlink(missing_ok=True)
